@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1.0"
+        name="viewport">
+  <title>Dynamic Form Card Generator</title>
+  <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: beige;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 10px;
+            height: 100vh;
+            background: white; /* This will set the beige 
+  background for the entire body */
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 20px;
+            border: 1px solid black;
+            padding: 10px; /* Added */
+            border-radius: 10px; /* Added */            
+        }
+        .form-heading {
+            font-size: 30px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .form-section {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .column {
+            flex: 1;
+            min-width: 180px; /* Flex basis set to 180px to 
+  prevent columns from squeezing too much */
+            display: flex;
+            flex-direction: column;
+            padding: 0 10px;
+        }
+        label {
+            margin-bottom: 5px;
+        }
+        .wide-sub-option {
+            display: flex;
+            align-items: center;
+            margin-left: 20px; /* Indent 20px */
+            width: calc(200% + 10px); /* Span across two columns */
+        }
+        .inline-input {
+            display: flex;
+            align-items: center;
+            margin-left: 0; /* No indent */
+        }
+        .input-text {
+            border: none;
+            border-bottom: 1px solid black;
+            width: 100%;
+        }
+        .submit-btn {
+            padding: 10px;
+            background-color: black;
+            color: white;
+            border: none;
+            width: 100%;
+            cursor: pointer;
+        }
+        canvas {
+            display: none; /* Initially hidden */
+            width: 100%; /* Responsive width */
+            max-width: 600px; /* Match card max width */
+        }
+        .and-die {
+            margin-left: 20px; /* Indent 20px */
+        }
+        #loadingIndicator {
+            color: #007BFF;  /* Example: blue color */
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        #outputCanvas {
+          position: relative; /* Or absolute depending on your layout needs */
+          z-index: 1000; /* Ensures it's on top */
+          display: block; /* Should be visible */
+          max-width: 600px; /* Consistent with your card */
+        }
+        @media (max-width: 600px) {
+            .form-section {
+                flex-direction: column;
+            }
+            .wide-sub-option {
+                width: 100%; /* Full width on smaller screens */
+            }
+        }
+  </style>
+  <script>
+        document.addEventListener("DOMContentLoaded", function() 
+  {
+            
+  document.getElementById('cardForm').addEventListener('submit', 
+  function(event) {
+                event.preventDefault();
+                const formData = new FormData(event.target);
+                const encodedData = encodeFormData(formData);
+                window.location.href = `/cards/${encodedData}`;
+            });
+
+            function encodeFormData(formData) {
+                // Encode all form data to a base64 string
+                let obj = {};
+                formData.forEach((value, key) => {
+                    if (!obj[key]) {
+                        obj[key] = value;
+                    } else {
+                        obj[key] += ', ' + value;
+                    }
+                });
+                return btoa(JSON.stringify(obj));
+            }
+        });
+  </script>
+</head>
+<body>
+  <div class="card"
+       id="formContainer">
+    <div class="form-header">
+      <label><input name="whatthe"
+             type="checkbox"
+             value="whatthe"> WHAT THE</label> <label><input name="idga"
+             type="checkbox"
+             value="idga"> I DON'T GIVE A</label>
+    </div>
+    <h1 class="form-heading">FUCK</h1>
+    <form id="cardForm"
+          name="cardForm">
+      <div class="form-section">
+        <div class="column">
+          <label><input name="choice"
+                 type="checkbox"
+                 value="me"> ME</label> <label><input name="choice"
+                 type="checkbox"
+                 value="yes"> YES</label> <label><input name="choice"
+                 type="checkbox"
+                 value="off"> OFF</label> <label class="and-die"><input name="choice"
+                 type="checkbox"
+                 value="and die"> AND DIE</label>
+        </div>
+        <div class="column">
+          <label><input name="choice"
+                 type="checkbox"
+                 value="that"> THAT</label> <label><input name="choice"
+                 type="checkbox"
+                 value="it"> IT</label> <label><input name="choice"
+                 type="checkbox"
+                 value="you"> YOU</label>
+          <div class="wide-sub-option">
+            <label><input name="choice"
+                   type="checkbox"
+                   value="and the horse you rode in on"> AND THE HORSE YOU RODE IN ON</label>
+          </div>
+        </div>
+        <div class="column">
+          <label><input name="choice"
+                 type="checkbox"
+                 value="this"> THIS</label> <label><input name="choice"
+                 type="checkbox"
+                 value="the man"> THE MAN</label>
+          <div class="inline-input">
+            <input name="choice"
+                 type="checkbox"
+                 value="other"><input class="input-text"
+                 name="custom"
+                 placeholder="Type here..."
+                 type="text">
+          </div>
+        </div>
+      </div><button class="submit-btn"
+            type="submit">Submit</button>
+    </form>
+  </div><!-- Loading indicator placed below the form -->
+  <div id="loadingIndicator"
+       style="display: none; text-align: center; margin-top: 20px;">
+    Processing...
+  </div>
+</body>
+</html>
